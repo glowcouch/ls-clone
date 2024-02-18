@@ -5,6 +5,7 @@ use std::{
 
 mod colors;
 mod icons;
+mod labels;
 
 fn main() {
     for entry in fs::read_dir(get_dir()).unwrap() {
@@ -12,7 +13,10 @@ fn main() {
         println!(
             "{} {}",
             icons::icon_from_file(&entry.as_ref().unwrap().path()),
-            colors::colorize_file(&entry.unwrap().path())
+            colors::colorize_label(
+                &labels::label_fom_path(&entry.as_ref().unwrap().path()),
+                &entry.unwrap().path()
+            )
         );
     }
 }

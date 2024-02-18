@@ -21,6 +21,7 @@ pub fn icon_from_file(file: &Path) -> ColoredString {
                 "nix" => md::MD_NIX.blue(), // Nix language files
                 "png" | "jpg" | "jpeg" | "webp" | "bmp" | "gif" | "svg" | "apng" | "kra"
                 | "ico" | "tiff" => md::MD_IMAGE.magenta(), // Images
+                "md" | "pdf" | "docx" => md::MD_LANGUAGE_MARKDOWN.blue(),
                 _ => " ".white(),
             }
         } else {

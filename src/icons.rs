@@ -32,3 +32,25 @@ pub fn icon_from_file(file: &Path) -> ColoredString {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use nerd_font_symbols::md;
+    use std::fs;
+    use temp_dir::TempDir;
+
+    #[test]
+    fn test_icon_from_file() {
+        // Create test files
+        let tmp = TempDir::new().unwrap();
+        let _ = fs::write(tmp.child("image.png"), "");
+        let _ = fs::write(tmp.child("config.toml"), "");
+
+        assert_eq!(
+            icon_from_file(&tmp.child("image.png")),
+            md::MD_IMAGE.magenta()
+        );
+        assert_eq!(icon_from_file(&tmp.child("config.toml")), md::MD_COG.blue());
+    }
+}

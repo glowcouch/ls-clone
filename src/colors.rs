@@ -17,3 +17,41 @@ pub fn colorize_file(file: &Path) -> ColoredString {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use temp_dir::TempDir;
+
+    #[test]
+    fn test_colorize_file() {
+        // Create test files
+        let tmp = TempDir::new().unwrap();
+        let _ = fs::write(tmp.child("image.png"), "");
+        let _ = fs::write(tmp.child("document.md"), "");
+        let _ = fs::write(tmp.child(".gitignore"), "");
+        let _ = fs::create_dir(tmp.child("config"));
+
+        #[cfg(unix)]
+        let _ = std::os::unix::fs::symlink(tmp.child("config"), tmp.child("config_symlink"));
+
+        #[cfg(windows)]
+        let _ = std::os::windows::fs::symlink_dir(tmp.child("config_symlink"), tmp.child("config"));
+
+        assert_eq!(
+            colorize_file(&tmp.child("document.md")),
+            "document.md".white()
+        );
+        assert_eq!(colorize_file(&tmp.child("image.png")), "image.png".white());
+        assert_eq!(
+            colorize_file(&tmp.child(".gitignore")),
+            ".gitignore".white()
+        );
+        assert_eq!(colorize_file(&tmp.child("config")), "config".blue());
+        assert_eq!(
+            colorize_file(&tmp.child("config_symlink")),
+            "config_symlink".yellow()
+        );
+    }
+}

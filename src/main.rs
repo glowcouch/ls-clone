@@ -8,8 +8,15 @@ mod icons;
 mod labels;
 
 fn main() {
-    for entry in fs::read_dir(get_dir()).unwrap() {
-        // Just print the icon and the label
+    list_dir(&get_dir(), 0);
+}
+
+// List the files in a directory
+fn list_dir(dir: &PathBuf, indentation: i32) {
+    for entry in fs::read_dir(dir).unwrap() {
+        for _ in 0..indentation {
+            print!(" ")
+        }
         println!(
             "{} {}",
             icons::icon_from_file(&entry.as_ref().unwrap().path()),

@@ -14,7 +14,7 @@ fn main() {
 // Run the program from the command line arguments
 fn from_arguments() {
     let matches = command!()
-        .arg(arg!([path] "Will default to current path if no path is specified"))
+        .arg(arg!([path] "Optional path (defaults to current directory)"))
         .arg(arg!(-r --recursive <depth> "Recursively lists files"))
         .get_matches();
 

@@ -1,7 +1,5 @@
-use std::{
-    env, fs,
-    path::{Path, PathBuf},
-};
+use clap::{arg, command};
+use std::{env, fs, path::PathBuf};
 
 static INDENT_WIDTH: i32 = 2;
 
@@ -10,7 +8,29 @@ mod icons;
 mod labels;
 
 fn main() {
-    list_dir(&get_dir(), 0, false, 0);
+    from_arguments();
+}
+
+// Run the program from the command line arguments
+fn from_arguments() {
+    let matches = command!()
+        .arg(arg!([path] "Will default to current path if no path is specified"))
+        .arg(arg!(-r --recursive <depth> "Recursively lists files"))
+        .get_matches();
+
+    let dir: PathBuf;
+
+    if let Some(path) = matches.get_one::<String>("path") {
+        dir = PathBuf::from(path.clone());
+    } else {
+        dir = env::current_dir().unwrap();
+    }
+    if let Some(recursive) = matches.get_one::<String>("recursive") {
+        let depth = recursive.parse::<i32>();
+        list_dir(&dir, 0, true, depth.clone().unwrap());
+    } else {
+        list_dir(&dir, 0, false, 0);
+    }
 }
 
 // List the files in a directory
@@ -35,20 +55,5 @@ fn list_dir(dir: &PathBuf, indentation: i32, recursive: bool, depth: i32) {
                 depth - 1,
             );
         }
-    }
-}
-
-// Get the directory the program should run on
-fn get_dir() -> PathBuf {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() > 1 {
-        if Path::new(&args[1]).exists() {
-            PathBuf::from(args[1].clone())
-        } else {
-            "".to_string().into()
-        }
-    } else {
-        env::current_dir().unwrap()
     }
 }

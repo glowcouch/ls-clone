@@ -9,4 +9,5 @@ edition = "2021"
 nerd-font-symbols = "0.1.0"
 colored = "2"
 temp-dir = "0.1.12"
+clap = { version = "4.5.1", features = ["derive", "cargo"] }
 

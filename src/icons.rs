@@ -5,6 +5,7 @@ use std::{fs, path::Path};
 // Get a nerd font icon from a std::path::Path file
 pub fn icon_from_file(file: &Path) -> ColoredString {
     if file.is_dir() {
+        // Empty folder
         if fs::read_dir(file).unwrap().peekable().peek().is_some() {
             md::MD_FOLDER.blue()
         } else {

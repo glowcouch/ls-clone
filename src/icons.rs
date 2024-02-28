@@ -23,6 +23,12 @@ pub fn icon_from_file(file: &Path) -> ColoredString {
                 | "ico" | "tiff" => md::MD_IMAGE.magenta(), // Images
                 "md" => md::MD_LANGUAGE_MARKDOWN.blue(),
                 "docx" | "pdf" | "txt" => md::MD_FILE_DOCUMENT.blue(),
+                "zip" | "rar" => md::MD_ZIP_BOX.blue(), // Compressed files
+                "c" => md::MD_LANGUAGE_C.blue(),
+                "cpp" => md::MD_LANGUAGE_CPP.blue(),
+                "jar" => md::MD_LANGUAGE_JAVA.blue(),
+                "mp4" | "mov" | "avi" | "wmv" | "flv" | "f4v" | "mkv" | "webm" | "avchd"
+                | "m4v" => md::MD_VIDEO.blue(), // Videos
                 _ => " ".white(),
             }
         } else {

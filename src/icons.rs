@@ -34,6 +34,7 @@ pub fn icon_from_file(file: &Path) -> ColoredString {
                 "jar" => md::MD_LANGUAGE_JAVA.blue(),
                 "mp4" | "mov" | "avi" | "wmv" | "flv" | "f4v" | "mkv" | "webm" | "avchd"
                 | "m4v" => md::MD_VIDEO.blue(), // Videos
+                "sock" => md::MD_POWER_PLUG.blue(),
                 _ => " ".white(),
             }
         } else {

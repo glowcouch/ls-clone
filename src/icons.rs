@@ -6,10 +6,14 @@ use std::{fs, path::Path};
 pub fn icon_from_file(file: &Path) -> ColoredString {
     if file.is_dir() {
         // Empty folder
-        if fs::read_dir(file).unwrap().peekable().peek().is_some() {
-            md::MD_FOLDER.blue()
+        if let Ok(read_dir) = fs::read_dir(file) {
+            if read_dir.peekable().peek().is_some() {
+                md::MD_FOLDER.blue()
+            } else {
+                md::MD_FOLDER_OUTLINE.blue()
+            }
         } else {
-            md::MD_FOLDER_OUTLINE.blue()
+            md::MD_FOLDER_QUESTION.blue()
         }
     } else {
         if let Some(ext) = file.extension() {

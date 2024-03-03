@@ -18,6 +18,7 @@ fn from_arguments() {
         .arg(arg!([path] "Optional path (defaults to current directory)"))
         .arg(arg!(-a --all "Don't ignore entries starting with ."))
         .arg(arg!(-r --recursive <depth> "Recursively lists files"))
+        .arg(arg!(-l --long "Use a long listing format"))
         .get_matches();
 
     // Should we hide dots
@@ -33,16 +34,37 @@ fn from_arguments() {
     }
 
     // Recursive or not
-    if let Some(recursive) = matches.get_one::<String>("recursive") {
-        let depth = recursive.parse::<i32>();
-        list_dir(&dir, 0, true, depth.clone().unwrap(), hide_dots);
+    let recursive: bool;
+    let depth: i32;
+    if let Some(depth_string) = matches.get_one::<String>("recursive") {
+        depth = depth_string.parse::<i32>().unwrap();
+        recursive = true;
     } else {
-        list_dir(&dir, 0, false, 0, hide_dots);
+        depth = 0;
+        recursive = false;
     }
+
+    // Long format
+    let long: bool = *matches.get_one::<bool>("long").unwrap();
+
+    // Run list_dir
+    list_dir(&dir, 0, recursive, depth, hide_dots, long);
 }
 
 // List the files in a directory
-fn list_dir(dir: &PathBuf, indentation: i32, recursive: bool, depth: i32, hide_dots: bool) {
+fn list_dir(
+    dir: &PathBuf,
+    indentation: i32,
+    recursive: bool,
+    depth: i32,
+    hide_dots: bool,
+    show_count: bool,
+) {
+    if show_count {
+        // Show the number of files in the directory
+        println!("total {}", fs::read_dir(dir).unwrap().count());
+    }
+
     for entry in fs::read_dir(dir).unwrap() {
         // Check if file starts with .
         if (!entry
@@ -80,6 +102,7 @@ fn list_dir(dir: &PathBuf, indentation: i32, recursive: bool, depth: i32, hide_d
                     true,
                     depth - 1,
                     hide_dots,
+                    false,
                 );
             }
         }

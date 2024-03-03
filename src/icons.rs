@@ -31,7 +31,16 @@ pub fn icon_from_file(file: &Path) -> ColoredString {
                 "zip" | "rar" => md::MD_ZIP_BOX.blue(), // Compressed files
                 "c" => md::MD_LANGUAGE_C.blue(),
                 "cpp" => md::MD_LANGUAGE_CPP.blue(),
-                "jar" => md::MD_LANGUAGE_JAVA.blue(),
+                "jar" | "java" => md::MD_LANGUAGE_JAVA.blue(),
+                "cs" => md::MD_LANGUAGE_CSHARP.blue(),
+                "css" => md::MD_LANGUAGE_CSS3.blue(),
+                "js" => md::MD_LANGUAGE_JAVASCRIPT.blue(),
+                "lua" => md::MD_LANGUAGE_LUA.blue(),
+                "php" => md::MD_LANGUAGE_PHP.blue(),
+                "py" => md::MD_LANGUAGE_PYTHON.blue(),
+                "go" => md::MD_LANGUAGE_GO.blue(),
+                "html" => md::MD_LANGUAGE_HTML5.blue(),
+                "sh" => nerd_font_symbols::dev::DEV_TERMINAL.blue(),
                 "mp4" | "mov" | "avi" | "wmv" | "flv" | "f4v" | "mkv" | "webm" | "avchd"
                 | "m4v" => md::MD_VIDEO.blue(), // Videos
                 "sock" => md::MD_POWER_PLUG.blue(),
